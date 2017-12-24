@@ -1,4 +1,4 @@
-
+import xunit
 
 # Invoke test method
 # Invoke setUp first
@@ -11,47 +11,16 @@
 # if the method was run
 
 # What is a constancy in code ? It will change.
-# Code will change, and it needs to be flexibe
+# Code will change, and it needs to be flexible
 # how do you flex it ? Changing it, using TDD
 
-class TestCase:
-    def __init__(self, name):
-        self.name = name
 
-    def setUp(self):
-        pass
-
-    def run(self):
-        method = getattr(self, self.name)
-        method()
-
-
-class WasRun(TestCase):
-    def __init__(self, name):
-        self.wasRun = None
-        self.wasSetup = None
-        TestCase.__init__(self, name)
-
-    def setUp(self):
-        self.wasRun = None
-        self.wasSetup = 1
-
-    def testMethod(self):
-        self.wasRun = 1
-        self.wasSetup = 1
-
-
-class TestCaseTest(TestCase):
-    def testSetUp(self):
-        test = WasRun("testMethod")
+class TestCaseTest(xunit.TestCase):
+    def testTemplateMethod(self):
+        test = xunit.WasRun("testMethod")
         test.run()
-        assert test.wasSetup
+        assert "setUp testMethod tearDown " == test.log
 
-    def testRunning(self):
-        test = WasRun("testMethod")
-        test.run()
-        assert test.wasRun
+TestCaseTest("testTemplateMethod").run()
 
-
-TestCaseTest("testRunning").run()
-# TestCaseTest("testSetUp").run()
+# keep a little log of the methods that are called -> we know the order of the tests are called
